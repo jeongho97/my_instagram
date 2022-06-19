@@ -1,0 +1,26 @@
+server:
+  port : 8000
+spring:
+  devtools:
+    livereload:
+      enabled : true
+  datasource:
+    url : jdbc:mysql://localhost:3306/insta?serverTimezone=UTC&characterEncoding=UTF-8
+    username : root
+    password : 1234
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 10MB
+file: E:\spring_boot\insta\src\main\resources\static
+
+
+mybatis:
+  config-location: classpath:config/myBatis.xml
+
+jwt:
+  secret_key: SECRET_APPLESECRET_APPLESECRET_APPLESECRET_APPLE
+  expTime: 86400000

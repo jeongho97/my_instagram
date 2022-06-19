@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.posco.insta.post.repository.PostMapper">
+    <select id="getPosts" resultType="PostDto">
+        SELECT
+            id,userId,img,content
+        FROM
+            posts
+    </select>
+    <select id="getPostsById" resultType="SelectPostJoinUserDto" parameterType="PostDto">
+        SELECT
+            p.id, p.userId, p.img, p.content,
+            u.name as userName, u.img as userImg
+        FROM
+            posts as p
+        INNER JOIN user as u
+        ON u.id = p.userId
+        WHERE id = #{id}
+    </select>
+    <select id="findPostsByUserId" parameterType="PostDto" resultType="SelectPostJoinUserDto">
+        SELECT
+            p.id,p.userId,p.img,p.content,
+            u.name as userName, u.img as userImg
+        FROM
+            posts as p
+        INNER JOIN
+            users as u
+        ON p.userId=u.id
+        WHERE p.userId=#{userId}
+    </select>
+
+    <delete id="deletePostByUserIdAndId" parameterType="PostDto">
+        DELETE FROM POSTS
+        WHERE id = #{id} AND userId = #{userId}
+    </delete>
+
+    <select id="findPostsByNotUserId" parameterType="PostDto" resultType="SelectPostJoinUserDto">
+        SELECT
+            p.id,p.userId,p.img,p.content,
+            u.name as userName, u.img as userImg
+        FROM
+            posts as p
+        INNER JOIN
+            users as u
+        ON p.userId=u.id
+        WHERE p.userId != #{userId}
+    </select>
+
+    <update id="updatePostByUserAndId" parameterType="PostDto">
+        UPDATE posts
+        <set>
+            <if test="img!=null">img=#{img},</if>
+            <if test="content!=null">content=#{content},</if>
+        </set>
+        WHERE
+        id=#{id} AND userId=#{userId}
+    </update>
+
+    <insert id="insertPost" parameterType="PostDto">
+        INSERT INTO
+            posts (userId,img,content)
+        VALUES
+            (#{userId},#{img},#{content})
+    </insert>
+
+    <select id="getPostsByKey" parameterType="String" resultType="SelectPostJoinUserDto">
+        SELECT
+            p.id,p.userId,p.img,p.content,
+            u.name as userName, u.img as userImg
+        FROM
+            posts as p
+        INNER JOIN
+            users as u
+        ON p.userId=u.id
+        WHERE p.content like CONCAT('%', #{Key}, '%')
+    </select>
+
+    <select id="getPostsByMyFollowing" parameterType="PostDto" resultType="SelectPostJoinUserDto">
+        SELECT
+            p.id,p.userId,p.img,p.content,
+            u.name as userName, u.img as userImg
+        FROM
+            posts as p
+        INNER JOIN
+            users as u
+        ON p.userId=u.id
+        INNER JOIN
+            follows as f
+        ON p.userId=f.follower
+        WHERE f.following= #{userId}
+    </select>
+
+</mapper>
