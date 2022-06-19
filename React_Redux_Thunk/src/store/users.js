@@ -42,7 +42,7 @@ export const getCheckId = createAsyncThunk(
   // payloadCreator callback: 비동기 로직의 결과를 포함하고 있는 프로미스를 반환하는 비동기 함수
   async (userId, thunkAPI) => {
     //thunkAPI는  thunk함수에 전달되는 모든 매개변수와 추가 옵션을 포함하는 객체
-    const { users } = thunkAPI.getState().users; //thunkAPI는 initialState에 있는 걸 들고옴 users는 initialState에 있는 users 결국 data에 User.js에 저장시킨 데이터들임 DB를 구축안해서 해놓은것
+    const { users } = thunkAPI.getState().users; //thunkAPI는 State값 들고옴 users는 State에 있는 users 결국 data에 User.js에 저장시킨 데이터들임 DB를 구축안해서 해놓은것
     console.log(users);
     return await checkId(users, userId);
   }
